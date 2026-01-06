@@ -1,0 +1,18 @@
+# Dependencies
+backend/venv/
+backend/__pycache__/
+frontend/node_modules/
+frontend/dist/
+
+# Env & Config
+.env
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Data & Models (Optional: keep if you want to share them, exclude if large)
+# backend/models/*.pkl
+# data/raw/*.geojson
+# For this demo project, we generally keep data/models as they are small and needed for the walkthrough
