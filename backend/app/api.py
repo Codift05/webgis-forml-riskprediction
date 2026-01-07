@@ -12,7 +12,7 @@ router = APIRouter()
 # If running from 'backend', data is at '../data/raw/'
 # Adjust paths helper
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, '../data/raw/manado_risk_data.geojson')
+DATA_PATH = os.path.join(BASE_DIR, '../data/raw/manado_osm_final.geojson')
 MODEL_PATH = os.path.join(BASE_DIR, 'models/risk_model.pkl')
 
 class PredictionRequest(BaseModel):

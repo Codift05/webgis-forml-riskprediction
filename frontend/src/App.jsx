@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import MapView from './components/MapView';
+import MethodologyModal from './components/MethodologyModal';
 import './index.css';
 
 function App() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch Data from Backend
@@ -44,8 +46,9 @@ function App() {
 
   return (
     <div className="App">
-      <Sidebar data={data} />
+      <Sidebar data={data} onOpenMethodology={() => setIsModalOpen(true)} />
       <MapView data={data} />
+      <MethodologyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }

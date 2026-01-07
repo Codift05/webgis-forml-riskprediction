@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
+import SimulationPanel from './SimulationPanel';
+import { DashboardIcon, ChartIcon, InfoIcon, BoltIcon } from './Icons';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -21,27 +23,30 @@ ChartJS.register(
     ArcElement
 );
 
-const Sidebar = ({ data }) => {
+const Sidebar = ({ data, onOpenMethodology }) => {
+    const [showSim, setShowSim] = useState(false);
+
     const stats = useMemo(() => {
         if (!data || !data.features) return { low: 0, medium: 0, high: 0, total: 0 };
 
         const counts = { low: 0, medium: 0, high: 0, total: data.features.length };
         data.features.forEach(f => {
-            const level = f.properties.risk_level.toLowerCase();
-            if (counts[level] !== undefined) counts[level]++;
+            const level = f.properties.risk_level;
+            if (level === 'Low') counts.low++;
+            if (level === 'Medium') counts.medium++;
+            if (level === 'High') counts.high++;
         });
         return counts;
     }, [data]);
 
     const barData = {
-        labels: ['Low', 'Medium', 'High'],
+        labels: ['Rendah', 'Sedang', 'Tinggi'],
         datasets: [
             {
-                label: 'Risk Areas',
+                label: 'Area',
                 data: [stats.low, stats.medium, stats.high],
-                backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
-                borderColor: ['#16a34a', '#ca8a04', '#dc2626'],
-                borderWidth: 1,
+                backgroundColor: ['#4ade80', '#eab308', '#f87171'], // Pastel Green, Yellow, Red
+                borderRadius: 5,
             },
         ],
     };
@@ -49,67 +54,89 @@ const Sidebar = ({ data }) => {
     const chartOptions = {
         responsive: true,
         plugins: {
-            legend: { position: 'bottom', labels: { color: '#cbd5e1' } },
+            legend: { display: false },
             title: { display: false },
         },
         scales: {
-            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-            x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+            x: { grid: { display: false }, ticks: { color: '#64748b' } },
+            y: { grid: { display: false }, ticks: { display: false } }
         }
     };
 
     const donutData = {
-        labels: ['Low', 'Medium', 'High'],
+        labels: ['Rendah', 'Sedang', 'Tinggi'],
         datasets: [
             {
                 data: [stats.low, stats.medium, stats.high],
-                backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
+                backgroundColor: ['#4ade80', '#eab308', '#f87171'],
                 borderWidth: 0,
             },
         ],
     };
 
     return (
-        <div className="sidebar">
-            <div className="title">
-                WebGIS Risk Prediction
-            </div>
-
-            <div className="card">
-                <h3>Overview</h3>
-                <div style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'center' }}>
-                    <div>
-                        <div className="stat-value" style={{ color: '#ef4444' }}>{stats.high}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>High Risk</div>
-                    </div>
-                    <div>
-                        <div className="stat-value" style={{ color: '#eab308' }}>{stats.medium}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Medium</div>
-                    </div>
-                    <div>
-                        <div className="stat-value" style={{ color: '#22c55e' }}>{stats.low}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Low</div>
-                    </div>
+        <div className="sidebar modern-sidebar">
+            <div className="sidebar-header">
+                <div className="logo-icon">🌿</div>
+                <div>
+                    <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#1e293b', margin: 0 }}>EnviroGuard</h2>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>WebGIS Risiko Sampah</span>
                 </div>
             </div>
 
-            <div className="card">
-                <h3>Risk Distribution</h3>
-                <Bar data={barData} options={chartOptions} />
-            </div>
-
-            <div className="card">
-                <h3>Composition</h3>
-                <div style={{ height: '200px', display: 'flex', justifyContent: 'center' }}>
-                    <Doughnut data={donutData} options={{ maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+            <div className="nav-menu">
+                <div className="nav-item active">
+                    <DashboardIcon /> <span>Overview</span>
                 </div>
+                <div style={{ padding: '0 20px', marginBottom: '15px' }}>
+                    <div className="stats-grid">
+                        <div className="stat-card low">
+                            <span className="label">Rendah</span>
+                            <span className="value">{stats.low}</span>
+                        </div>
+                        <div className="stat-card mid">
+                            <span className="label">Sedang</span>
+                            <span className="value">{stats.medium}</span>
+                        </div>
+                        <div className="stat-card high">
+                            <span className="label">Tinggi</span>
+                            <span className="value">{stats.high}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card-modern">
+                    <div className="card-header">
+                        <ChartIcon /> <span>Distribusi Risiko</span>
+                    </div>
+                    <div style={{ height: '140px' }}>
+                        <Bar data={barData} options={chartOptions} />
+                    </div>
+                </div>
+
+                <div className="card-modern">
+                    <div className="card-header">
+                        <ChartIcon /> <span>Komposisi Wilayah</span>
+                    </div>
+                    <div style={{ height: '140px', display: 'flex', justifyContent: 'center' }}>
+                        <Doughnut data={donutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } } }} />
+                    </div>
+                </div>
+
+                <div className="action-area">
+                    <button className="btn-modern-outline" onClick={onOpenMethodology}>
+                        <InfoIcon /> Metodologi
+                    </button>
+                    <button className={`btn-modern-primary ${showSim ? 'active' : ''}`} onClick={() => setShowSim(!showSim)}>
+                        <BoltIcon /> {showSim ? 'Tutup Simulasi' : 'Simulasi Kebijakan'}
+                    </button>
+                </div>
+
+                {showSim && <SimulationPanel />}
             </div>
 
-            <div className="card">
-                <h3>About</h3>
-                <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-                    This system predicts environmental risk in Manado based on population, waste volume, and spatial features using Random Forest.
-                </p>
+            <div className="sidebar-footer">
+                <p>&copy; 2024 Manado Smart City</p>
             </div>
         </div>
     );

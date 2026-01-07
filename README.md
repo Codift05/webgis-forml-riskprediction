@@ -1,93 +1,102 @@
-# WebGIS Berbasis Machine Learning untuk Prediksi Risiko Lingkungan 🌍
-### Studi Kasus: Risiko Penumpukan Sampah Perkotaan di Kota Manado
+# WebGIS Machine Learning for Environmental Risk Prediction
+### Case Study: Urban Waste Accumulation Risk Analysis in Manado City
 
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Lambang_Kota_Manado.png" alt="Logo Kota Manado" width="100"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Tambahkan Logo Universitas/Instansi Lain di Sini -->
-  <!-- <img src="URL_LOGO_KAMPUS" alt="Logo Universitas" width="100"/> -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Lambang_Kota_Manado.png" alt="Manado City Coat of Arms" width="100"/>
 </div>
 
 <br/>
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.109-005571?style=for-the-badge&logo=fastapi)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)
-![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?style=for-the-badge&logo=leaflet)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3-F7931E?style=for-the-badge&logo=scikit-learn)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=flat-square&logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109-005571?style=flat-square&logo=fastapi)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)
+![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?style=flat-square&logo=leaflet)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3-F7931E?style=flat-square&logo=scikit-learn)
 
 </div>
 
-## 📌 Tentang Proyek
-Proyek ini bertujuan untuk mengembangkan sistem **WebGIS Interaktif** yang mampu memprediksi tingkat risiko lingkungan (khususnya penumpukan sampah liar) di Kota Manado. Sistem ini mengintegrasikan **Analisis Spasial** dengan algoritma **Machine Learning (Random Forest)** untuk memberikan wawasan berbasis data bagi pengambil keputusan.
+## 📌 Abstract
+This project presents the development of an integrated **WebGIS** application designed to assess and predict environmental risks, specifically focusing on illegal waste accumulation in Manado City. By leveraging **Spatial Analysis** and **Machine Learning** algorithms, the system provides a data-driven approach to urban environmental management. The core prediction engine utilizes a **Random Forest Classifier** to evaluate risk levels based on multi-dimensional spatial data, serving as a decision support system for local municipal authorities.
 
-### ✨ Fitur Utama
-*   **Peta Interaktif**: Visualisasi risiko wilayah (High/Medium/Low) menggunakan warna indikator.
-*   **Prediksi Cerdas**: Menggunakan ML untuk memprediksi risiko berdasarkan Kepadatan Penduduk, Jarak ke TPS, dan Volume Sampah.
-*   **Dashboard Analitik**: Grafik statistik real-time mengenai distribusi risiko di seluruh kota.
-*   **Detail Wilayah**: Klik pada titik peta untuk melihat skor risiko dan faktor penyebab dominan.
+## ✨ Key Features
 
-## 🛠️ Arsitektur Teknologi
-Sistem ini dibangun dengan arsitektur modern terpisah (Client-Server):
+*   **Geospatial Risk Visualization**: Interactive mapping interface displaying risk classification (High, Medium, Low) across different city zones using choropleth or point-based visualization.
+*   **Predictive Modeling**: Implementation of a Machine Learning model to forecast risk probability based on critical variables:
+    *   Population Density
+    *   Proximity to Waste Disposal Sites (TPS)
+    *   Historical Waste Volume
+*   **Real-time Analytics Dashboard**: Comprehensive statistical overview regarding risk distribution and contributing factors.
+*   **Granular Region Analysis**: Detailed inspection capabilities for specific coordinates or administrative boundaries, providing explainable insights into risk scoring.
 
-*   **Backend**: Python (FastAPI)
-    *   *Machine Learning*: Scikit-Learn (Random Forest Classifier)
-    *   *Data Processing*: Pandas, GeoPandas
-*   **Frontend**: React.js (Vite)
-    *   *Maps*: Leaflet & React-Leaflet
-    *   *Charts*: Chart.js 
-*   **Data Format**: GeoJSON
+## 🛠️ System Architecture
+The application follows a modern decoupled Client-Server architecture:
 
-## 🚀 Cara Menjalankan
+### Backend (API & Model)
+*   **Core Framework**: FastAPI (Python) for high-performance, asynchronous API delivery.
+*   **Machine Learning**: Scikit-Learn (Random Forest) for model training and inference.
+*   **Data Processing**: Pandas and GeoPandas for spatial data manipulation.
 
-### Prasyarat
-*   Python 3.8+
+### Frontend (User Interface)
+*   **Framework**: React.js (via Vite) for a reactive and component-based UI.
+*   **Mapping Library**: Leaflet & React-Leaflet for rendering interactive geospatial layers.
+*   **Data Visualization**: Chart.js for rendering statistical analytics.
+
+## 🚀 Installation & Setup Guide
+
+### Prerequisites
+*   Python 3.8 or higher
 *   Node.js & NPM
 
-### 1. Backend (API & Model)
+### 1. Backend Service Initialization
 ```bash
 cd backend
 python -m venv venv
-# Windows
+
+# Activate Virtual Environment
+# Windows:
 .\venv\Scripts\activate
-# Linux/Mac
+# Unix/MacOS:
 # source venv/bin/activate
 
+# Install Dependencies
 pip install -r requirements.txt
 
-# Generate Data Dummy (Jika data asli belum tersedia)
+# Run Data Simulation (Optional: If real datasets are measuring unavailable)
 python generate_data.py
 
-# Latih Model
+# Train the Prediction Model
 python train_model.py
 
-# Jalankan Server
+# Launch API Server
 uvicorn app.main:app --reload
 ```
-*Server akan berjalan di: `http://localhost:8000`*
+*The API service will be accessible at: `http://localhost:8000`*
 
-### 2. Frontend (Web Interface)
+### 2. Frontend Application Initialization
 ```bash
 cd frontend
+
+# Install Dependencies
 npm install
+
+# Start Development Server
 npm run dev
 ```
-*Aplikasi bisa diakses di: `http://localhost:5173`*
+*The Web Application will be accessible at: `http://localhost:5173`*
 
-## ⚠️ Disclaimer Data
-> **Catatan Penting untuk Penguji/Dosen:**
-> Saat ini, sistem menggunakan **Data Sintetis (Dummy Generated)** yang disimulasikan menyerupai karakteristik geografis Kota Manado. 
-> *   Koordinat titik dibuat random di dalam bounding box Manado.
-> *   Variabel (Penduduk, Sampah) dibangkitkan dengan pola logika fuzzy untuk keperluan demonstrasi prototipe.
+## ⚠️ Data Disclaimer
+> **Important Note for Reviewers:**
+>
+> This prototype currently operates using **Synthetic Data Simulation**. The geospatial coordinates and attribute data (Population, Waste Volume) are generated programmatically to mimic the topological and demographic characteristics of Manado City for demonstration purposes. 
 > 
-> Sistem ini siap menerima **Dataset Riil** (Format GeoJSON/CSV) tanpa mengubah struktur kode utama.
+> The system architecture is designed to seamlessly ingest real-world datasets (GeoJSON/CSV) without requiring structural code modifications.
 
-## 👥 Kontributor
-Dibuat oleh **[Nama Anda/Tim]** untuk memenuhi tugas [Mata Kuliah/Skripsi].
+## 👥 Contributors
+Developed as a final year project by **[Your Name/Team Name]**.
 
 ---
 <div align="center">
-  Copyright © 2026 WebGIS Manado Project
+  Copyright © 2026 WebGIS Manado Project. All Rights Reserved.
 </div>

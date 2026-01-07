@@ -11,7 +11,7 @@ import os
 
 def train_model():
     # Load data
-    data_path = '../data/raw/manado_risk_data.geojson'
+    data_path = '../data/raw/manado_osm_final.geojson'
     if not os.path.exists(data_path):
         print("Data file not found. Please run generate_data.py first.")
         return
@@ -53,8 +53,12 @@ def train_model():
     print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
     
     # Save Model
-    os.makedirs('../models', exist_ok=True)
-    model_path = '../models/risk_model.pkl'
+    # Save Model (Absolute path safe)
+    base_dir = os.path.dirname(os.path.abspath(__file__)) # backend/
+    models_dir = os.path.join(base_dir, 'models')
+    os.makedirs(models_dir, exist_ok=True)
+    model_path = os.path.join(models_dir, 'risk_model.pkl')
+    
     joblib.dump(clf, model_path)
     print(f"Model saved to {model_path}")
 
